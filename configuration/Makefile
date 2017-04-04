@@ -17,3 +17,5 @@ $(SITE_CONFIG): myturn.nginx
 	sudo cp -f $< $@
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
+diff:
+	diff -r -x '.git*' .. /var/www/myturn-backend/
