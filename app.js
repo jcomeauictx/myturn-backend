@@ -32,7 +32,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.use('/', appRouter);
+app.use('/api', appRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
