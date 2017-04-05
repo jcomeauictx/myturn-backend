@@ -1,5 +1,5 @@
-SERVICE := myturn
-BACKEND := node-$(SERVICE)-backend
+SERVICE := myturn-web
+BACKEND := node-myturn-backend
 NGINX_CONFIG := /etc/nginx
 SITE_ROOT := /var/www/myturn-web
 SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
@@ -9,7 +9,7 @@ DRYRUN ?= --dry-run  # for rsync
 export
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: ~/src/myturn-web | $(SITE_ROOT)
-	cd $< && sudo rsync -avuz $(DRYRUN) \
+	cd $< && sudo rsync -avcz $(DRYRUN) \
 	 --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
