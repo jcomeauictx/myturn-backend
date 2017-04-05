@@ -9,7 +9,9 @@ DRYRUN ?= --dry-run  # for rsync
 export
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: ~/src/myturn-web | $(SITE_ROOT)
-	rsync -avuz $(DRYRUN) $</ $(SITE_ROOT)/
+	cd $< && sudo rsync -avuz $(DRYRUN) \
+	 --exclude='.git*' \
+	 . $(SITE_ROOT)/
 /etc/init.d/%: %
 	[ -e "$@" ] && diff -q $< $@ || sudo mv $@ $@.$(TIMESTAMP)
 	[ -e "$@" ] || sudo cp $< $@
