@@ -13,7 +13,7 @@ siteinstall: ~/src/myturn-web | $(SITE_ROOT)
 	 --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
-	[ -e "$@" ] && diff -q $< $@ || sudo mv $@ $@.$(TIMESTAMP)
+	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
 	sudo update-rc.d $* enable
@@ -24,7 +24,7 @@ $(SITE_ROOT):
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
-	[ -e "$@" ] && diff -q $< $@ || sudo mv $@ $@.$(TIMESTAMP)
+	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
