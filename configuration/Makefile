@@ -18,6 +18,10 @@ siteinstall: ~/src/myturn-web | $(SITE_ROOT)
 /etc/rc2.d/S01%: /etc/init.d/%
 	sudo update-rc.d $* defaults
 startup_service: /etc/init.d/$(BACKEND)
+	if [ -z "$$(which forever)" ]; then \
+	 sudo apt-get update; \
+	 sudo apt-get install node-forever-agent; \
+	fi
 	sudo $< restart
 $(SITE_ROOT):
 	sudo mkdir -p $@
