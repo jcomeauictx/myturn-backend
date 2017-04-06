@@ -13,6 +13,10 @@ siteinstall: ~/src/myturn-web | $(SITE_ROOT)
 	 --exclude='.git*' \
 	 . $(SITE_ROOT)/
 /etc/init.d/%: %
+	(cd .. && rsync -avuz $(DRYRUN) \
+	 --exclude='.git*' \
+	 --exclude='configuration' \
+	 . /var/www/myturn-backend')
 	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
