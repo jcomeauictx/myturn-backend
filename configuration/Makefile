@@ -16,7 +16,7 @@ siteinstall: ~/src/myturn-web | $(SITE_ROOT)
 	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
-	sudo update-rc.d $* enable
+	sudo update-rc.d $* defaults
 startup_service: /etc/init.d/$(BACKEND)
 	sudo $< restart
 $(SITE_ROOT):
