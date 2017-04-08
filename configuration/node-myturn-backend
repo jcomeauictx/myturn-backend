@@ -11,7 +11,7 @@
 ### END INIT INFO
 
 
-#	CLI /usr/bin/nodejs /usr/bin/forever-service install node-myturn-backend --script api.js -o  --local
+#	CLI /usr/bin/nodejs /usr/bin/forever-service install node-myturn-backend --script app.js -o  --local
 APPDIR=/var/www/myturn-backend  # directory root, for finding `forever` executable
 
 #Setup Environment variables (if any)
@@ -73,7 +73,7 @@ start() {
 	 --spinSleepTime $SPIN_SLEEP_TIME \
 	 --killSignal $KILL_SIGNAL \
 	 --uid node-myturn-backend \
-	 start api.js  --local 2>&1 >/dev/null
+	 start app.js  --local 2>&1 >/dev/null
 	
 	RETVAL=$?
 
