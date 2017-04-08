@@ -6,6 +6,9 @@
     "start": "node ./bin/www",
     "install": "make install"
   },
+  "engines": {
+    "node": ">=6.10.0"
+  },
   "dependencies": {
     "body-parser": "~1.16.0",
     "debug": "~2.6.0",
