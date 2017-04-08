@@ -6,33 +6,44 @@ SITE_CONFIG := $(NGINX_CONFIG)/sites-available/$(SERVICE)
 SITE_ACTIVE := $(NGINX_CONFIG)/sites-enabled/$(SERVICE)
 TIMESTAMP := $(shell date +%Y%m%d%H%M%S)
 DRYRUN ?= --dry-run  # for rsync
+DELETE ?= --delete
 export
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
 siteinstall: ~/src/myturn-web | $(SITE_ROOT)
-	cd $< && sudo rsync -avcz $(DRYRUN) \
+	(cd $< && sudo rsync -avcz $(DRYRUN) \
 	 --exclude='.git*' \
-	 . $(SITE_ROOT)/
-/etc/init.d/%: %
+	 . $(SITE_ROOT)/)
 	(cd .. && rsync -avuz $(DRYRUN) \
 	 --exclude='.git*' \
 	 --exclude='configuration' \
-	 . /var/www/myturn-backend')
-	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
+	 . /var/www/myturn-backend)
+/etc/init.d/%: %
+	if [ -e "$@" ]; then \
+	 if diff -q $< $@; then \
+	  echo $@ unchanged >&2; \
+	 else \
+	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
+	  sudo mv $@ $@.$(TIMESTAMP); \
+	 fi; \
+	fi
 	[ -e "$@" ] || sudo cp $< $@
 /etc/rc2.d/S01%: /etc/init.d/%
 	sudo update-rc.d $* defaults
 startup_service: /etc/init.d/$(BACKEND)
-	if [ -z "$$(which forever)" ]; then \
-	 sudo apt-get update; \
-	 sudo apt-get install node-forever-agent; \
-	fi
 	sudo $< restart
 $(SITE_ROOT):
 	sudo mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
-	if [ -e "$@" ] && diff -q $< $@; then sudo mv $@ $@.$(TIMESTAMP); fi
+	if [ -e "$@" ]; then \
+	 if diff -q $< $@; then \
+	  echo $@ unchanged >&2; \
+	 else \
+	  echo Saving $@ to $@.$(TIMESTAMP) >&2; \
+	  sudo mv $@ $@.$(TIMESTAMP); \
+	 fi; \
+	fi
 	[ -e "$@" ] || sudo cp $< $@
 restart_nginx: /etc/init.d/nginx
 	sudo $< restart
