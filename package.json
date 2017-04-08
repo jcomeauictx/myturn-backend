@@ -16,7 +16,8 @@
     "mongoose": "^4.8.6",
     "morgan": "~1.7.0",
     "node-uuid": "^1.4.7",
-    "socket.io": "^1.7.3"
+    "socket.io": "^1.7.3",
+    "https://github.com/jcomeauictx/myturn-web"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
