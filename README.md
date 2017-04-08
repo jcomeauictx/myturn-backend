@@ -1,5 +1,5 @@
 # Myturn Backend
 
-Open source collaborative upgrade of David Stodolsky's (https://github.com/dstodoksky/myturnb)[myturnb] project.
+Open source collaborative upgrade of David Stodolsky's [myturnb](https://github.com/dstodoksky/myturnb) project.
 
-This requires NodeJS version 6 or higher, due to use of `const` expressions like that found on (https://github.com/MyTurn-OpenSource/myturn-backend/blob/master/app/group/groupSockets.js#L7)[line 7 of `app/group/groupSockets.js`].
+This requires NodeJS version 6 or higher, due to use of `const` expressions like that found on [line 7 of app/group/groupSockets.js](https://github.com/MyTurn-OpenSource/myturn-backend/blob/master/app/group/groupSockets.js#L7).
