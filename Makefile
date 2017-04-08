@@ -3,5 +3,5 @@ install:
 	if [ -z "$$(which node)" ]; then \
 	 sudo ln -sf $$(which nodejs) $$(dirname $$(which nodejs))/node; \
 	fi
-	@echo Installing MyTurn from $(PWD)
+	@echo Installing MyTurn backend from $(PWD)
 	cd configuration && $(MAKE) DRYRUN= siteinstall install

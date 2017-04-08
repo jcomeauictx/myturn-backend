@@ -1,3 +1,4 @@
+SHELL := /bin/bash
 SERVICE := myturn-web
 BACKEND := node-myturn-backend
 NGINX_CONFIG := /etc/nginx
@@ -9,11 +10,11 @@ DRYRUN ?= --dry-run  # for rsync
 DELETE ?= --delete
 export
 install: /etc/rc2.d/S01$(BACKEND) $(SITE_ACTIVE) startup_service restart_nginx
-siteinstall: ~/src/myturn-web | $(SITE_ROOT)
-	(cd $< && sudo rsync -avcz $(DRYRUN) \
-	 --exclude='.git*' \
-	 . $(SITE_ROOT)/)
-	(cd .. && rsync -avuz $(DRYRUN) \
+siteinstall:
+	[ -d $(SITE_ROOT) ] || \
+	 (echo 'Must first `make install` from myturn-web sources' >&2; \
+	  echo 'Alternatively `npm install jcomeauictx/myturn-web`' >&2; false)
+	(cd .. && sudo rsync -avuz $(DRYRUN) \
 	 --exclude='.git*' \
 	 --exclude='configuration' \
 	 . /var/www/myturn-backend)
@@ -31,8 +32,6 @@ siteinstall: ~/src/myturn-web | $(SITE_ROOT)
 	sudo update-rc.d $* defaults
 startup_service: /etc/init.d/$(BACKEND)
 	sudo $< restart
-$(SITE_ROOT):
-	sudo mkdir -p $@
 $(SITE_ACTIVE): $(SITE_CONFIG)
 	cd $(dir $@) && sudo ln -sf ../sites-available/$(notdir $<) .
 $(SITE_CONFIG): myturn.nginx
