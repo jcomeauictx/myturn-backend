@@ -5,3 +5,7 @@ install:
 	fi
 	@echo Installing MyTurn backend from $(PWD)
 	cd configuration && $(MAKE) DRYRUN= siteinstall install
+logs: /var/log/node-myturn-backend.log /var/log/nginx/myturn-web-error.log
+	tail -f $+
+logs.clear: /var/log/node-myturn-backend.log /var/log/nginx/myturn-web-error.log
+	for logfile in $+; do cat /dev/null | sudo tee $$logfile; done
