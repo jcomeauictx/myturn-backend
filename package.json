@@ -20,12 +20,14 @@
     "morgan": "~1.7.0",
     "node-uuid": "^1.4.7",
     "socket.io": "^1.7.3",
-    "myturn-web": "git://github.com/jcomeauictx/myturn-web.git",
-    "forever": "0.15.3"
+    "myturn-web": "git://github.com/jcomeauictx/myturn-web.git"
   },
   "devDependencies": {
     "eslint": "^3.16.1",
     "eslint-config-airbnb-base": "^11.1.0",
     "eslint-plugin-import": "^2.2.0"
+  },
+  "scripts": {
+    "preinstall": "sudo npm install -g forever"
   }
 }
