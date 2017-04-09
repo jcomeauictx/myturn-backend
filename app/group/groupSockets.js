@@ -4,16 +4,31 @@ const controller = require('./groupController');
 
 const ACTION_TYPES = Group.getActionTypes();
 
-const {
-  USER_JOINED,
-  REQUESTED_TURN,
-  STOPPED_TURN_REQUEST,
-  TURN_GRANTED,
-  ENDED_TURN,
-  TURN_EXPIRED,
-  LEFT_GROUP,
-  DISCUSSION_EXPIRED,
-} = ACTION_TYPES;
+try {
+  eval("const {" +
+    "USER_JOINED, " +
+    "REQUESTED_TURN, " +
+    "STOPPED_TURN_REQUEST, " +
+    "TURN_GRANTED, " +
+    "ENDED_TURN, " +
+    "TURN_EXPIRED, " +
+    "LEFT_GROUP, " +
+    "DISCUSSION_EXPIRED, " +
+  "} = ACTION_TYPES;");
+} catch (problem) {  // the above only works in ES>=6
+  console.log(problem);
+}
+if (typeof(USER_JOINED) == "undefined") {
+  (function() {
+    // make this work with either NodeJS or client-side JS
+    // don't worry about using "const" at this point, we want it to work
+    // on older versions of NodeJS, as on Debian Stable
+    try {global.window = global;} catch (problem) {console.log(problem);}
+    for (var key in ACTION_TYPES) {
+      window[key] = ACTION_TYPES[key];
+    }
+  }());
+}
 
 const userActionListener = (client, room, groupId) => {
   client.on('action', ({ actionType, name }) => {
