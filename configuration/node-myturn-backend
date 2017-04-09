@@ -57,7 +57,7 @@ checkpidexists() {
 
 
 start() {
-	STATUS=$($APPDIR/node_modules/forever/bin/forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
+	STATUS=$(forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
 	
 	if ! [ -z "$STATUS" ]; then
 		echo "Service node-myturn-backend already running"
@@ -66,7 +66,7 @@ start() {
 
 	echo  "Starting node-myturn-backend"
 	cd $APPDIR
-	node_modules/forever/bin/forever \
+	forever \
 	 -a \
 	 -l $LOGFILE \
 	 --minUptime $MIN_UPTIME \
@@ -86,7 +86,7 @@ stop() {
 	echo -n "Shutting down node-myturn-backend: "
 
     
-	STATUS=$($APPDIR/node_modules/forever/bin/forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
+	STATUS=$(forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
 	
 	if [ -z "$STATUS" ]; then
 		echo "Not running"
@@ -95,7 +95,7 @@ stop() {
 
 	# PID=$(<$PIDFILE) - Changed to detection based on actual PID from forever, sicne due to watchDirectory pid could dynamically change
     
-	PID=$($APPDIR/node_modules/forever/bin/forever --plain list | sed -n -e '/data:\s*\[[0-9]*\]\s\(node-myturn-backend\)\s/p' | awk '{print $7}')
+	PID=$(forever --plain list | sed -n -e '/data:\s*\[[0-9]*\]\s\(node-myturn-backend\)\s/p' | awk '{print $7}')
 	
 
 	if [ -z "$PID" ]; then
@@ -107,7 +107,7 @@ stop() {
 	#but we want to wait till some time and forcibly kill after elapsed time
 	#without background script, we could be waiting forever
 	
-	$APPDIR/node_modules/forever/bin/forever stop node-myturn-backend 2>&1 >/dev/null &
+	forever stop node-myturn-backend 2>&1 >/dev/null &
 	
 
 	CURRENTWAITTIME=$KILLWAITTIME
@@ -138,7 +138,7 @@ stop() {
 }
 
 status() {
-	STATUS=$($APPDIR/node_modules/forever/bin/forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
+	STATUS=$(forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
 	
 	if [ -z "$STATUS" ]; then
 		echo "node-myturn-backend is not running"
