@@ -9,8 +9,8 @@ server {
     root        /var/www/myturn-web;
     index       index.html;
 
-    access_log  /var/log/nginx/myturn-access.log;
-    error_log   /var/log/nginx/myturn-error.log;
+    access_log  /var/log/nginx/myturn-web-access.log;
+    error_log   /var/log/nginx/myturn-web-error.log;
 
     location /api {
         proxy_pass http://localhost:3030/api;
