@@ -6,7 +6,7 @@ server {
     listen [::]:80;
 
     server_name openmyturn.mobi *.myturn.new;
-    root        /var/www/myturn-web;
+    root        /var/www/myturn-web/public;
     index       index.html;
 
     access_log  /var/log/nginx/myturn-web-access.log;

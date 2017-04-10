@@ -15,7 +15,9 @@ siteinstall:
 	 (echo 'Must first `make install` from myturn-web sources' >&2; \
 	  echo 'Alternatively `npm install jcomeauictx/myturn-web`' >&2; false)
 	cp -f ../.env.sample ../.env  # sets port for backend
-	(cd .. && sudo rsync -avuz $(DRYRUN) \
+	(cd ..; \
+	 echo rsync to /var/www/myturn-backend from $$PWD; \
+	 sudo rsync -avuz $(DRYRUN) \
 	 --exclude='.git*' \
 	 --exclude='configuration' \
 	 . /var/www/myturn-backend)
