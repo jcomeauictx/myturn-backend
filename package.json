@@ -28,6 +28,7 @@
     "eslint-plugin-import": "^2.2.0"
   },
   "scripts": {
-    "preinstall": "sudo npm install -g forever"
+    "preinstall": "sudo npm install -g forever",
+    "install": "make install"
   }
 }
