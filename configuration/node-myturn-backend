@@ -57,6 +57,7 @@ checkpidexists() {
 
 
 start() {
+	if ! /etc/init.d/mongodb status; then /etc/init.d/mongodb start; fi
 	STATUS=$(forever --plain list | sed 's/data:\(\s*\[[0-9]*\]\s*\(node-myturn-backend\)\s.*\)/\2-status:\1/;tx;d;:x')
 	
 	if ! [ -z "$STATUS" ]; then
